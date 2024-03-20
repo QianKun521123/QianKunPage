@@ -105,10 +105,10 @@
     <!-- ICP备案 -->
     <div class="absolute bottom-1 text-[10px] text-center" v-show="icpVisible">
       <p>
-        Copyright © 2021 - 2024 youlai.tech All Rights Reserved. 有来技术
+        Copyright © 2024 - 202？ QianKun All Rights Reserved. 
         版权所有
       </p>
-      <p>皖ICP备20006496号-3</p>
+      <p>皖ICP备xxxxx号-3</p>
     </div>
   </div>
 </template>
