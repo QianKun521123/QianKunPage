@@ -8,12 +8,38 @@ export default defineMock([
       code: "00000",
       data: [
         {
+          path: "/money",
+          component: "Layout",
+          redirect: "/system/accounting",
+          name: "/accounting",
+          meta: {
+            title: "记账",
+            icon: "accounting",
+            hidden: false,
+            roles: ["ADMIN"],
+          },
+          children: [
+            {
+              path: "detail",
+              component: "system/detail/index",
+              name: "detail",
+              meta: {
+                title: "俩表",
+                icon: "detail",
+                hidden: false,
+                roles: ["ADMIN"],
+                keepAlive: true,
+              }
+            }
+          ]
+        },
+        {
           path: "/system",
           component: "Layout",
           redirect: "/system/user",
           name: "/system",
           meta: {
-            title: "系统管理",
+            title: "系统管理1",
             icon: "system",
             hidden: false,
             roles: ["ADMIN"],

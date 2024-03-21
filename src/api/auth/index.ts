@@ -36,10 +36,12 @@ export function logoutApi() {
 
 /**
  * 获取验证码
+ * export function getCaptchaApi(): AxiosPromise<CaptchaResult> {
  */
+// export function getCaptchaApi() {
 export function getCaptchaApi(): AxiosPromise<CaptchaResult> {
   return request({
-    url: "/api/v1/auth/captcha",
+    url: "/captcha",
     method: "get",
   });
 }

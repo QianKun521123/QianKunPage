@@ -104,11 +104,11 @@
 
     <!-- ICP备案 -->
     <div class="absolute bottom-1 text-[10px] text-center" v-show="icpVisible">
-      <p>
+      <p class="foot1">
         Copyright © 2024 - 202？ QianKun All Rights Reserved. 
         版权所有
       </p>
-      <p>皖ICP备xxxxx号-3</p>
+      <p  class="foot2">皖ICP备xxxxx号-3</p>
     </div>
   </div>
 </template>
@@ -179,9 +179,13 @@ const loginRules = computed(() => {
  * 获取验证码
  */
 function getCaptcha() {
+  console.log("获取验证码")
   getCaptchaApi().then(({ data }) => {
+    console.log(data)
     loginData.value.captchaKey = data.captchaKey;
+    console.log(loginData.value.captchaKey)
     captchaBase64.value = data.captchaBase64;
+    console.log(captchaBase64.value)
   });
 }
 
@@ -294,5 +298,11 @@ html.dark .login-container {
       transition: background-color 1000s ease-in-out 0s;
     }
   }
+}
+.foot1{
+  font-size: 13px;
+}
+.foot2{
+  font-size: 12px;
 }
 </style>
