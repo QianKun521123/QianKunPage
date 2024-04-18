@@ -29,7 +29,7 @@ export function loginApi(data: LoginData): AxiosPromise<LoginResult> {
  */
 export function logoutApi() {
   return request({
-    url: "/api/v1/auth/logout",
+    url: "/logout",
     method: "delete",
   });
 }

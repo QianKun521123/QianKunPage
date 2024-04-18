@@ -181,11 +181,8 @@ const loginRules = computed(() => {
 function getCaptcha() {
   console.log("获取验证码")
   getCaptchaApi().then(({ data }) => {
-    console.log(data)
     loginData.value.captchaKey = data.captchaKey;
-    console.log(loginData.value.captchaKey)
     captchaBase64.value = data.captchaBase64;
-    console.log(captchaBase64.value)
   });
 }
 

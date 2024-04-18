@@ -7,7 +7,7 @@ import { MenuQuery, MenuVO, MenuForm } from "./types";
  */
 export function listRoutes() {
   return request({
-    url: "/api/v1/menus/routes",
+    url: "/menus/routes",
     method: "get",
   });
 }
@@ -19,7 +19,7 @@ export function listRoutes() {
  */
 export function listMenus(queryParams: MenuQuery): AxiosPromise<MenuVO[]> {
   return request({
-    url: "/api/v1/menus",
+    url: "/menus",
     method: "get",
     params: queryParams,
   });
