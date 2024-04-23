@@ -42,7 +42,7 @@ export function getMenuOptions(): AxiosPromise<OptionType[]> {
  */
 export function getMenuForm(id: number): AxiosPromise<MenuForm> {
   return request({
-    url: "/api/v1/menus/" + id + "/form",
+    url: "/menus/" + id + "/form",
     method: "get",
   });
 }
