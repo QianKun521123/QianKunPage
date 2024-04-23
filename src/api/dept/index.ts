@@ -56,9 +56,9 @@ export function addDept(data: DeptForm) {
  * @param id
  * @param data
  */
-export function updateDept(id: number, data: DeptForm) {
+export function updateDept( data: DeptForm) {
   return request({
-    url: "/dept/" + id,
+    url: "/dept",
     method: "put",
     data: data,
   });

@@ -254,7 +254,7 @@ function handleSubmit() {
       const deptId = formData.id;
       loading.value = true;
       if (deptId) {
-        updateDept(deptId, formData)
+        updateDept( formData)
           .then(() => {
             ElMessage.success("修改成功");
             closeDialog();
