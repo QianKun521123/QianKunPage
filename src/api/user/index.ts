@@ -60,7 +60,7 @@ export function addUser(data: any) {
  */
 export function updateUser(id: number, data: UserForm) {
   return request({
-    url: "/users/" + id,
+    url: "/user/" + id,
     method: "put",
     data: data,
   });
@@ -74,7 +74,7 @@ export function updateUser(id: number, data: UserForm) {
  */
 export function updateUserPassword(id: number, password: string) {
   return request({
-    url: "/users/" + id + "/password",
+    url: "/user/" + id + "/password",
     method: "patch",
     params: { password: password },
   });
@@ -87,7 +87,7 @@ export function updateUserPassword(id: number, password: string) {
  */
 export function deleteUsers(ids: string) {
   return request({
-    url: "/users/" + ids,
+    url: "/user/" + ids,
     method: "delete",
   });
 }
@@ -99,7 +99,7 @@ export function deleteUsers(ids: string) {
  */
 export function downloadTemplateApi() {
   return request({
-    url: "/users/template",
+    url: "/user/template",
     method: "get",
     responseType: "arraybuffer",
   });
@@ -113,7 +113,7 @@ export function downloadTemplateApi() {
  */
 export function exportUser(queryParams: UserQuery) {
   return request({
-    url: "/users/_export",
+    url: "/user/_export",
     method: "get",
     params: queryParams,
     responseType: "arraybuffer",
@@ -129,7 +129,7 @@ export function importUser(deptId: number, file: File) {
   const formData = new FormData();
   formData.append("file", file);
   return request({
-    url: "/users/_import",
+    url: "/user/_import",
     method: "post",
     params: { deptId: deptId },
     data: formData,
