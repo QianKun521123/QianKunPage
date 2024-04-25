@@ -254,17 +254,18 @@ onMounted(() => {
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="角色名称" prop="name" min-width="100" />
-        <el-table-column label="角色编码" prop="code" width="150" />
+        <el-table-column label="账单名称" prop="name" min-width="100" />
+        <el-table-column label="备注" prop="remark" width="150" />
 
         <el-table-column label="状态" align="center" width="100">
           <template #default="scope">
-            <el-tag v-if="scope.row.status === 1" type="success">正常</el-tag>
-            <el-tag v-else type="info">禁用</el-tag>
+            <el-tag v-if="scope.row.deleted === 1" type="success">正常</el-tag>
+            <el-tag v-else type="info">删除</el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column label="排序" align="center" width="80" prop="sort" />
+        <el-table-column label="创建时间" prop="createTime" width="200" />
+        <el-table-column label="修改时间" prop="updateTime" width="200" />
 
         <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">
@@ -321,11 +322,9 @@ onMounted(() => {
         <el-form-item label="角色名称" prop="name">
           <el-input v-model="formData.name" placeholder="请输入角色名称" />
         </el-form-item>
-
         <el-form-item label="角色编码" prop="code">
           <el-input v-model="formData.code" placeholder="请输入角色编码" />
         </el-form-item>
-
         <el-form-item label="数据权限" prop="dataScope">
           <el-select v-model="formData.dataScope">
             <el-option :key="0" label="全部数据" :value="0" />
@@ -334,7 +333,6 @@ onMounted(() => {
             <el-option :key="3" label="本人数据" :value="3" />
           </el-select>
         </el-form-item>
-
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="formData.status">
             <el-radio :label="1">正常</el-radio>
