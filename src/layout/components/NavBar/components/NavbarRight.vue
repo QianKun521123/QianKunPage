@@ -88,9 +88,7 @@ function logout() {
     type: "warning",
     lockScroll: false,
   }).then(() => {
-    userStore
-      .logout()
-      .then(() => {
+    userStore.logout().then(() => {
         tagsViewStore.delAllViews();
       })
       .then(() => {

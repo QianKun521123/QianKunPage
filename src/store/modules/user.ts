@@ -57,8 +57,7 @@ export const useUserStore = defineStore("user", () => {
   // user logout
   function logout() {
     return new Promise<void>((resolve, reject) => {
-      logoutApi()
-        .then(() => {
+      logoutApi().then(() => {
           localStorage.setItem("token", "");
           location.reload(); // 清空路由
           resolve();
