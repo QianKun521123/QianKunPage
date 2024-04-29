@@ -7,9 +7,20 @@ import { BillNamePageVO,BillNameQuery,BillNameForm } from "./types";
  * @param queryParams
  */
 export function getBillNamePage(queryParams: BillNameQuery): AxiosPromise<PageResult<BillNamePageVO[]>> {
-    return request({
-      url: "/bill/name/page",
-      method: "get",
-      params: queryParams,
-    });
-  }
+  return request({
+    url: "/bill/name/page",
+    method: "get",
+    params: queryParams,
+  });
+}
+/**
+ * 获取角色详情
+ *
+ * @param id
+ */
+export function getBillNameForm(id: number): AxiosPromise<BillNameForm> {
+  return request({
+    url: "/bill/name/" + id ,
+    method: "get",
+  });
+}

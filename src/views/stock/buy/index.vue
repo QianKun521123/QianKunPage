@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getBillNamePage,getBillNameForm } from "@/api/money";
+import { getStockBuyPage,getStockBuyForm } from "@/api/stock/buy";
 
-import { BillNamePageVO, BillNameQuery, BillNameForm } from "@/api/money/types";
+import { StockBuyPageVO, StockBuyQuery, StockBuyForm } from "@/api/stock/buy/types";
 
 defineOptions({
   name: "Role",
@@ -52,10 +52,11 @@ let checkedRole: CheckedRole = reactive({});
 /** 查询 */
 function handleQuery() {
   loading.value = true;
-  getBillNamePage(queryParams)
+  getStockBuyPage(queryParams)
     .then(({ data }) => {
       roleList.value = data.list;
       total.value = data.total;
+      autoUpdateData();
     })
     .finally(() => {
       loading.value = false;
@@ -78,7 +79,7 @@ function openDialog(roleId?: number) {
   dialog.visible = true;
   if (roleId) {
     dialog.title = "修改角色";
-    getBillNameForm(roleId).then(({ data }) => {
+    getStockBuyForm(roleId).then(({ data }) => {
       Object.assign(formData, data);
     });
   } else {
@@ -151,7 +152,14 @@ function handleDelete(roleId?: number) {
       .finally(() => (loading.value = false));
   });
 }
-
+// 设置一个1000毫秒后执行的定时任务
+function autoUpdateData(){
+  const updateUrl="https://sqt.gtimg.cn/q=";
+  setTimeout(function() {
+  roleList.value.forEach(e->{
+    console.log(e)
+  });
+}, 3000)}
 onMounted(() => {
   handleQuery();
 });
@@ -201,15 +209,22 @@ onMounted(() => {
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="账单名称" prop="name" min-width="100" />
-        <el-table-column label="备注" prop="remark" width="150" />
-
+        <el-table-column label="股票编码" prop="code" min-width="100" />
+        <el-table-column label="股票名称" prop="name" width="150" />
+        <el-table-column label="市价" prop="price" width="150" />
+        <el-table-column label="购买数量" prop="buyNum" width="150" />
+        <el-table-column label="购买价格" prop="buyPrice" width="150" />
+        <el-table-column label="当日涨跌" prop="changePrice" width="150" />
+        <el-table-column label="当日收益" prop="earnings" width="150" />
+        <el-table-column label="总收益" prop="EarningsAll" width="150" />
+<!-- 
         <el-table-column label="状态" align="center" width="100">
           <template #default="scope">
             <el-tag v-if="scope.row.status === 0" type="success">正常</el-tag>
             <el-tag v-else type="info">删除</el-tag>
           </template>
         </el-table-column>
+        -->
         <el-table-column label="创建时间" prop="createTime" width="200" />
         <el-table-column label="修改时间" prop="updateTime" width="200" />
 
