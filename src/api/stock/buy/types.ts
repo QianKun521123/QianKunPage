@@ -31,17 +31,17 @@ export interface StockBuyPageVO {
   /** 股票名称 */
   name?: string;
   /** 市价 */
-  price?: string;
+  price?: number;
   /** 购买数量 */
-  buyNum?: string;
+  buyNum?: number;
   /** 购买价格 */
-  buyPrice?: string;
+  buyPrice?: number;
   /** 当日涨跌 */
-  changePrice?: string;
+  dayGain?: number;
   /** 当日收益 */
-  earnings?: string;
+  dayReturn?: number;
   /** 总收益 */
-  EarningsAll?: string;
+  allEarnings?: string;
   /** 创建时间 */
   createTime?: Date;
   /** 修改时间 */

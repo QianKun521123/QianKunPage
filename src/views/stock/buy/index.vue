@@ -2,33 +2,36 @@
 import { getStockBuyPage,getStockBuyForm } from "@/api/stock/buy";
 
 import { StockBuyPageVO, StockBuyQuery, StockBuyForm } from "@/api/stock/buy/types";
+import axios from "axios";
+import { menuItemEmits } from "element-plus";
+import { reduce, result, size } from "lodash";
 
 defineOptions({
-  name: "Role",
+  name: "StockBuy",
   inheritAttrs: false,
 });
 
 const queryFormRef = ref(ElForm);
-const roleFormRef = ref(ElForm);
+const StockBuyFormRef = ref(ElForm);
 const menuRef = ref(ElTree);
 
 const loading = ref(false);
 const ids = ref<number[]>([]);
 const total = ref(0);
 
-const queryParams = reactive<RoleQuery>({
+const queryParams = reactive<StockBuyQuery>({
   pageNum: 1,
   pageSize: 10,
 });
 
-const roleList = ref<RolePageVO[]>();
+const StockBuyList = ref<StockBuyPageVO[]>();
 
 const dialog = reactive({
   title: "",
   visible: false,
 });
 
-const formData = reactive<RoleForm>({
+const formData = reactive<StockBuyForm>({
   sort: 1,
   status: 1,
   code: "",
@@ -41,20 +44,19 @@ const rules = reactive({
 
 const menuDialogVisible = ref(false);
 
-const menuList = ref<OptionType[]>([]);
 
-interface CheckedRole {
+interface CheckedStockBuy {
   id?: number;
   name?: string;
 }
-let checkedRole: CheckedRole = reactive({});
+let checkedStockBuy: CheckedStockBuy = reactive({});
 
 /** 查询 */
 function handleQuery() {
   loading.value = true;
   getStockBuyPage(queryParams)
     .then(({ data }) => {
-      roleList.value = data.list;
+      StockBuyList.value = data.list;
       total.value = data.total;
       autoUpdateData();
     })
@@ -75,11 +77,11 @@ function handleSelectionChange(selection: any) {
 }
 
 /** 打开角色表单弹窗 */
-function openDialog(roleId?: number) {
+function openDialog(StockBuyId?: number) {
   dialog.visible = true;
-  if (roleId) {
+  if (StockBuyId) {
     dialog.title = "修改角色";
-    getStockBuyForm(roleId).then(({ data }) => {
+    getStockBuyForm(StockBuyId).then(({ data }) => {
       Object.assign(formData, data);
     });
   } else {
@@ -89,12 +91,12 @@ function openDialog(roleId?: number) {
 
 /** 角色保存提交 */
 function handleSubmit() {
-  roleFormRef.value.validate((valid: any) => {
+  StockBuyFormRef.value.validate((valid: any) => {
     if (valid) {
       loading.value = true;
-      const roleId = formData.id;
-      if (roleId) {
-        updateRole(roleId, formData)
+      const StockBuyId = formData.id;
+      if (StockBuyId) {
+        updateStockBuy(StockBuyId, formData)
           .then(() => {
             ElMessage.success("修改成功");
             closeDialog();
@@ -102,7 +104,7 @@ function handleSubmit() {
           })
           .finally(() => (loading.value = false));
       } else {
-        addRole(formData)
+        addStockBuy(formData)
           .then(() => {
             ElMessage.success("新增成功");
             closeDialog();
@@ -122,8 +124,8 @@ function closeDialog() {
 
 /** 重置表单 */
 function resetForm() {
-  roleFormRef.value.resetFields();
-  roleFormRef.value.clearValidate();
+  StockBuyFormRef.value.resetFields();
+  StockBuyFormRef.value.clearValidate();
 
   formData.id = undefined;
   formData.sort = 1;
@@ -131,9 +133,9 @@ function resetForm() {
 }
 
 /** 删除角色 */
-function handleDelete(roleId?: number) {
-  const roleIds = [roleId || ids.value].join(",");
-  if (!roleIds) {
+function handleDelete(StockBuyId?: number) {
+  const StockBuyIds = [StockBuyId || ids.value].join(",");
+  if (!StockBuyIds) {
     ElMessage.warning("请勾选删除项");
     return;
   }
@@ -144,7 +146,7 @@ function handleDelete(roleId?: number) {
     type: "warning",
   }).then(() => {
     loading.value = true;
-    deleteRoles(roleIds)
+    deleteStockBuys(StockBuyIds)
       .then(() => {
         ElMessage.success("删除成功");
         resetQuery();
@@ -154,12 +156,18 @@ function handleDelete(roleId?: number) {
 }
 // 设置一个1000毫秒后执行的定时任务
 function autoUpdateData(){
-  const updateUrl="https://sqt.gtimg.cn/q=";
   setTimeout(function() {
-  roleList.value.forEach(e->{
-    console.log(e)
-  });
-}, 3000)}
+    StockBuyList.value?.forEach(element => {
+        axios.get("https://sqt.gtimg.cn/q="+element.code).then(res=>{
+          let stockData = res.data.split("~")
+          element.price = stockData[3];
+          element.allEarnings = ((stockData[3] - element.buyPrice!) * element.buyNum!).toFixed(2);
+          element.dayGain = stockData[31];
+          element.dayReturn = Number((stockData[31] * element.buyNum!).toFixed(2));
+        })
+    });
+  }, 3000)
+}
 onMounted(() => {
   handleQuery();
 });
@@ -203,20 +211,33 @@ onMounted(() => {
       <el-table
         ref="dataTableRef"
         v-loading="loading"
-        :data="roleList"
+        :data="StockBuyList"
         highlight-current-row
+        show-summary
         border
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55" align="center" />
+        <el-table-column type="selection" width="65" align="center" />
         <el-table-column label="股票编码" prop="code" min-width="100" />
         <el-table-column label="股票名称" prop="name" width="150" />
         <el-table-column label="市价" prop="price" width="150" />
         <el-table-column label="购买数量" prop="buyNum" width="150" />
         <el-table-column label="购买价格" prop="buyPrice" width="150" />
-        <el-table-column label="当日涨跌" prop="changePrice" width="150" />
-        <el-table-column label="当日收益" prop="earnings" width="150" />
-        <el-table-column label="总收益" prop="EarningsAll" width="150" />
+        <el-table-column label="当日涨跌" prop="dayGain" width="150" > 
+          <template #default="scope">
+            <span :style="{color: (scope.row.dayGain>0?'red':'green')}">{{ scope.row.dayGain }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="当日收益" prop="dayReturn" width="100" > 
+          <template #default="scope">
+            <span :style="{color: (scope.row.dayReturn>0?'red':'green')}">{{ scope.row.dayReturn }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="总收益" prop="allEarnings" width="100" > 
+          <template #default="scope">
+            <span :style="{color: (scope.row.allEarnings>0?'red':'green')}">{{ scope.row.allEarnings }}</span>
+          </template>
+        </el-table-column>
 <!-- 
         <el-table-column label="状态" align="center" width="100">
           <template #default="scope">
@@ -225,10 +246,10 @@ onMounted(() => {
           </template>
         </el-table-column>
         -->
-        <el-table-column label="创建时间" prop="createTime" width="200" />
-        <el-table-column label="修改时间" prop="updateTime" width="200" />
+        <el-table-column label="创建时间" prop="createTime" width="160" />
+        <el-table-column label="修改时间" prop="updateTime" width="160" />
 
-        <el-table-column fixed="right" label="操作" width="220">
+        <el-table-column fixed="right" label="操作" width="150">
           <template #default="scope">
             <el-button
               type="primary"
@@ -267,7 +288,7 @@ onMounted(() => {
       @close="closeDialog"
     >
       <el-form
-        ref="roleFormRef"
+        ref="StockBuyFormRef"
         :model="formData"
         :rules="rules"
         label-width="100px"
