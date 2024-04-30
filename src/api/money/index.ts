@@ -24,3 +24,43 @@ export function getBillNameForm(id: number): AxiosPromise<BillNameForm> {
     method: "get",
   });
 }
+/**
+ * 添加账单名称
+ *
+ * @param data
+ */
+export function addBillName(data: BillNameForm){
+  return request({
+    url: "/bill/name",
+    method: "post",
+    data: data,
+  });
+}
+
+
+/**
+ * 更新账单名称
+ *
+ * @param id
+ * @param data
+ */
+export function updateBillName( data: BillNameForm) {
+  return request({
+    url: "/bill/name",
+    method: "put",
+    data: data,
+  });
+}
+
+
+/**
+ * 批量删除账单名称，多个以英文逗号(,)分割
+ *
+ * @param ids
+ */
+export function deleteBillName(ids: string) {
+  return request({
+    url: "/bill/name/" + ids,
+    method: "delete",
+  });
+}

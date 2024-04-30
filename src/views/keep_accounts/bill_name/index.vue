@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getBillNamePage,getBillNameForm } from "@/api/money";
+import { getBillNamePage,getBillNameForm, addBillName, updateBillName, deleteBillName } from "@/api/money";
 
 import { BillNamePageVO, BillNameQuery, BillNameForm } from "@/api/money/types";
 
@@ -10,44 +10,33 @@ defineOptions({
 
 const queryFormRef = ref(ElForm);
 const roleFormRef = ref(ElForm);
-const menuRef = ref(ElTree);
 
 const loading = ref(false);
 const ids = ref<number[]>([]);
 const total = ref(0);
-
-const queryParams = reactive<RoleQuery>({
+const queryParams = reactive<BillNameQuery>({
   pageNum: 1,
   pageSize: 10,
 });
 
-const roleList = ref<RolePageVO[]>();
+const roleList = ref<BillNamePageVO[]>();
 
 const dialog = reactive({
   title: "",
   visible: false,
 });
 
-const formData = reactive<RoleForm>({
-  sort: 1,
-  status: 1,
-  code: "",
+const formData = reactive<BillNameForm>({
+  remark: "",
   name: "",
+  status: 0,
+  deleted: 0,
 });
 
 const rules = reactive({
   name: [{ required: true, message: "请输入账单名称", trigger: "blur" }],
 });
 
-const menuDialogVisible = ref(false);
-
-const menuList = ref<OptionType[]>([]);
-
-interface CheckedRole {
-  id?: number;
-  name?: string;
-}
-let checkedRole: CheckedRole = reactive({});
 
 /** 查询 */
 function handleQuery() {
@@ -93,7 +82,7 @@ function handleSubmit() {
       loading.value = true;
       const roleId = formData.id;
       if (roleId) {
-        updateRole(roleId, formData)
+        updateBillName( formData)
           .then(() => {
             ElMessage.success("修改成功");
             closeDialog();
@@ -101,7 +90,7 @@ function handleSubmit() {
           })
           .finally(() => (loading.value = false));
       } else {
-        addRole(formData)
+        addBillName(formData)
           .then(() => {
             ElMessage.success("新增成功");
             closeDialog();
@@ -125,7 +114,6 @@ function resetForm() {
   roleFormRef.value.clearValidate();
 
   formData.id = undefined;
-  formData.sort = 1;
   formData.status = 1;
 }
 
@@ -143,7 +131,7 @@ function handleDelete(roleId?: number) {
     type: "warning",
   }).then(() => {
     loading.value = true;
-    deleteRoles(roleIds)
+    deleteBillName(roleIds)
       .then(() => {
         ElMessage.success("删除成功");
         resetQuery();

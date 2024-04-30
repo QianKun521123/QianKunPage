@@ -45,4 +45,15 @@ export interface BillNamePageVO {
  * 账单名称表单类型
  */
 export interface BillNameForm {
+  /** 账单名称ID */
+  id?: number;
+  /** 账单名称 */
+  name?: string;
+  /** 账单名称备注 */
+  remark?: string;
+  /** 删除状态(1:未删除;0:删除) */
+  deleted?: number;
+  /** 停用状态(1:停用;0:启用) */
+  status?: number;
+  
 }

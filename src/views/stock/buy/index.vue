@@ -51,6 +51,8 @@ interface CheckedStockBuy {
 }
 let checkedStockBuy: CheckedStockBuy = reactive({});
 
+let updateTime = 2
+let autoupdate:any;
 /** 查询 */
 function handleQuery() {
   loading.value = true;
@@ -58,7 +60,10 @@ function handleQuery() {
     .then(({ data }) => {
       StockBuyList.value = data.list;
       total.value = data.total;
-      autoUpdateData();
+      clearTimeout(autoupdate);
+      autoupdate =  setInterval(() => {
+        updateData();
+      }, updateTime*1000);
     })
     .finally(() => {
       loading.value = false;
@@ -154,19 +159,16 @@ function handleDelete(StockBuyId?: number) {
       .finally(() => (loading.value = false));
   });
 }
-// 设置一个1000毫秒后执行的定时任务
-function autoUpdateData(){
-  setTimeout(function() {
-    StockBuyList.value?.forEach(element => {
-        axios.get("https://sqt.gtimg.cn/q="+element.code).then(res=>{
-          let stockData = res.data.split("~")
-          element.price = stockData[3];
-          element.allEarnings = ((stockData[3] - element.buyPrice!) * element.buyNum!).toFixed(2);
-          element.dayGain = stockData[31];
-          element.dayReturn = Number((stockData[31] * element.buyNum!).toFixed(2));
-        })
-    });
-  }, 3000)
+function updateData(){
+  StockBuyList.value?.forEach(element => {
+    axios.get("https://sqt.gtimg.cn/q="+element.code).then(res=>{
+      let stockData = res.data.split("~")
+      element.price = stockData[3];
+      element.allEarnings = ((stockData[3] - element.buyPrice!) * element.buyNum!).toFixed(2);
+      element.dayGain = stockData[31];
+      element.dayReturn = Number((stockData[31] * element.buyNum!).toFixed(2));
+    })
+  });
 }
 onMounted(() => {
   handleQuery();
@@ -206,6 +208,7 @@ onMounted(() => {
           @click="handleDelete()"
           ><i-ep-delete />删除</el-button
         >
+        数据刷新时间间隔：{{ updateTime }}秒
       </template>
 
       <el-table
