@@ -1,19 +1,12 @@
 <script setup lang="ts">
-import { getStockBuyPage,getStockBuyForm } from "@/api/stock/buy";
+import { getStockBuyPage,getStockBuyForm, getStockOption} from "@/api/stock/buy";
 
 import { StockBuyPageVO, StockBuyQuery, StockBuyForm } from "@/api/stock/buy/types";
 import axios from "axios";
-import { menuItemEmits } from "element-plus";
 import { reduce, result, size } from "lodash";
-
-defineOptions({
-  name: "StockBuy",
-  inheritAttrs: false,
-});
 
 const queryFormRef = ref(ElForm);
 const StockBuyFormRef = ref(ElForm);
-const menuRef = ref(ElTree);
 
 const loading = ref(false);
 const ids = ref<number[]>([]);
@@ -32,24 +25,21 @@ const dialog = reactive({
 });
 
 const formData = reactive<StockBuyForm>({
-  sort: 1,
-  status: 1,
   code: "",
   name: "",
+  buyPrice: 0,
+  buyNum: 0,
 });
 
 const rules = reactive({
   name: [{ required: true, message: "请输入账单名称", trigger: "blur" }],
 });
 
-const menuDialogVisible = ref(false);
-
 
 interface CheckedStockBuy {
   id?: number;
   name?: string;
 }
-let checkedStockBuy: CheckedStockBuy = reactive({});
 
 let updateTime = 2
 let autoupdate:any;
@@ -133,8 +123,7 @@ function resetForm() {
   StockBuyFormRef.value.clearValidate();
 
   formData.id = undefined;
-  formData.sort = 1;
-  formData.status = 1;
+  formData.status = 0;
 }
 
 /** 删除角色 */
@@ -169,6 +158,12 @@ function updateData(){
       element.dayReturn = Number((stockData[31] * element.buyNum!).toFixed(2));
     })
   });
+}
+var options : any;
+function stockOption(query: string){
+    getStockOption(query).then(({ data })=>{
+      options = data
+    })
 }
 onMounted(() => {
   handleQuery();
@@ -245,14 +240,6 @@ onMounted(() => {
             <span :style="{color: (scope.row.allEarnings>0?'red':'green')}">{{ scope.row.allEarnings }}</span>
           </template>
         </el-table-column>
-<!-- 
-        <el-table-column label="状态" align="center" width="100">
-          <template #default="scope">
-            <el-tag v-if="scope.row.status === 0" type="success">正常</el-tag>
-            <el-tag v-else type="info">删除</el-tag>
-          </template>
-        </el-table-column>
-        -->
         <el-table-column label="创建时间" prop="createTime" width="160" />
         <el-table-column label="修改时间" prop="updateTime" width="160" />
 
@@ -300,18 +287,55 @@ onMounted(() => {
         :rules="rules"
         label-width="100px"
       >
-        <el-form-item label="账单名称" prop="name">
-          <el-input v-model="formData.name" placeholder="请输入账单名称" />
+        <el-form-item label="股票名称" prop="name">
+          <!-- <el-input v-model="formData.name" placeholder="请输入账单名称" /> -->
+          <el-select
+        v-model="formData.name"
+        multiple
+        filterable
+        remote
+        reserve-keyword
+        placeholder="请输入账单名称"
+        :remote-method="stockOption"
+        :loading="loading"
+        style="width: 240px"
+      >
+        <el-option
+          v-for="item in options"
+          :key="item.id"
+          :label="item.id"
+          :value="item.id"
+        />
+      </el-select>
+          <!-- <el-select
+            v-model="formData.name"
+            placeholder="请输入账单名称"
+            filterable
+            remote
+            style="width: 240px"
+            automatic-dropdown
+            :remote-method="stockOption"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.id"
+              :label="item.code+item.name"
+              :value="item.code"
+            />
+          </el-select> -->
         </el-form-item>
-        <el-form-item label="备注" >
-          <el-input v-model="formData.remark" placeholder="请输入备注" />
+        <el-form-item label="购买价格" >
+          <el-input v-model="formData.buyPrice" placeholder="请输入购买价格" />
         </el-form-item>
-        <el-form-item label="状态" prop="status">
+        <el-form-item label="购买数量" >
+          <el-input v-model="formData.buyNum" placeholder="请输入购买数量" />
+        </el-form-item>
+        <!-- <el-form-item label="状态" prop="status">
           <el-radio-group v-model="formData.status">
             <el-radio :label="0">正常</el-radio>
             <el-radio :label="1">停用</el-radio>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
 
       <template #footer>

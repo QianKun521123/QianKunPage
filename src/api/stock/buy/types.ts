@@ -54,4 +54,31 @@ export interface StockBuyPageVO {
  * 账单名称表单类型
  */
 export interface StockBuyForm {
+  /** 股票名称ID */
+  id?: number;
+  /** 股票编码 */
+  code?: string;
+  /** 股票名称 */
+  name?: string;
+  /** 市价 */
+  price?: number;
+  /** 购买数量 */
+  buyNum?: number;
+  /** 购买价格 */
+  buyPrice?: number;
+  /** 当日涨跌 */
+  dayGain?: number;
+  /** 当日收益 */
+  dayReturn?: number;
+  /** 总收益 */
+  allEarnings?: string;
+}
+
+
+/**
+ * 选择
+ */
+export interface StockOption {
+  code?: string;
+  name?: string;
 }
