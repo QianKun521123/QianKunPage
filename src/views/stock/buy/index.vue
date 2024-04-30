@@ -223,7 +223,11 @@ onMounted(() => {
         <el-table-column type="selection" width="65" align="center" />
         <el-table-column label="股票编码" prop="code" min-width="100" />
         <el-table-column label="股票名称" prop="name" width="150" />
-        <el-table-column label="市价" prop="price" width="150" />
+        <el-table-column label="市价" prop="price" width="150" >
+          <template #default="scope">
+            <span :style="{color: (scope.row.price>scope.row.buyPrice?'red':'green')}">{{ scope.row.price }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="购买数量" prop="buyNum" width="150" />
         <el-table-column label="购买价格" prop="buyPrice" width="150" />
         <el-table-column label="当日涨跌" prop="dayGain" width="150" > 
