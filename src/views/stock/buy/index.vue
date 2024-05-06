@@ -29,6 +29,8 @@ const formData = reactive<StockBuyForm>({
 
 const rules = reactive({
   name: [{ required: true, message: "请选择股票名称", trigger: "blur" }],
+  buyPrice: [{pattern: /^(0|[1-9][0-9]*)$/,required: true, message: "购买金额不能为空且必须是数字", trigger: "blur" }],
+  buyNum: [{ pattern: /^(0|[1-9][0-9]*)$/,required: true, message: "购买数量不能为空且必须是数字", trigger: "blur" }],
 });
 
 
@@ -119,9 +121,11 @@ function closeDialog() {
 
 /** 重置表单 */
 function resetForm() {
+  console.log(formData)
   stockBuyFormRef.value.resetFields();
   stockBuyFormRef.value.clearValidate();
   formData.id = undefined;
+  console.log(formData)
 }
 
 /** 删除角色 */
@@ -300,18 +304,18 @@ onMounted(() => {
           style="width: 240px"
           @change="selectOptions"
         >
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label" 
-          :value="item"  
-        />
-      </el-select>
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label" 
+            :value="item"  
+          />
+        </el-select>
         </el-form-item>
-        <el-form-item label="购买价格" >
+        <el-form-item label="购买价格" prop="buyPrice">
           <el-input v-model="formData.buyPrice" placeholder="请输入购买价格" />
         </el-form-item>
-        <el-form-item label="购买数量" >
+        <el-form-item label="购买数量" prop="buyNum">
           <el-input v-model="formData.buyNum" placeholder="请输入购买数量" />
         </el-form-item>
         <!-- <el-form-item label="状态" prop="status">
