@@ -14,8 +14,8 @@ export interface UserInfo {
  * 账单名称查询对象类型
  */
 export interface StockBuyQuery extends PageQuery {
-  // keywords?: string;
-  // status?: number;
+  keywords?: string;
+  status?: number;
   // startTime?: string;
   // endTime?: string;
 }
@@ -72,13 +72,6 @@ export interface StockBuyForm {
   dayReturn?: number;
   /** 总收益 */
   allEarnings?: string;
-}
-
-
-/**
- * 选择
- */
-export interface StockOption {
-  code?: string;
-  name?: string;
+  
+  status?: number;
 }

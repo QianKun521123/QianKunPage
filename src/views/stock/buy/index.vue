@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getStockBuyPage,getStockBuyForm, getStockOption} from "@/api/stock/buy";
+import { getStockBuyPage,getStockBuyForm, getStockOption,addStockBuy} from "@/api/stock/buy";
 
 import { StockBuyPageVO, StockBuyQuery, StockBuyForm } from "@/api/stock/buy/types";
 import axios from "axios";
@@ -12,6 +12,7 @@ const loading = ref(false);
 const ids = ref<number[]>([]);
 const total = ref(0);
 
+const options: Ref<OptionType[]> = ref([]); // 字典下拉数据源
 const queryParams = reactive<StockBuyQuery>({
   pageNum: 1,
   pageSize: 10,
@@ -41,7 +42,7 @@ interface CheckedStockBuy {
   name?: string;
 }
 
-let updateTime = 2
+let updateTime = 1
 let autoupdate:any;
 /** 查询 */
 function handleQuery() {
@@ -140,12 +141,12 @@ function handleDelete(StockBuyId?: number) {
     type: "warning",
   }).then(() => {
     loading.value = true;
-    deleteStockBuys(StockBuyIds)
-      .then(() => {
-        ElMessage.success("删除成功");
-        resetQuery();
-      })
-      .finally(() => (loading.value = false));
+    // deleteStockBuys(StockBuyIds)
+    //   .then(() => {
+    //     ElMessage.success("删除成功");
+    //     resetQuery();
+    //   })
+    //   .finally(() => (loading.value = false));
   });
 }
 function updateData(){
@@ -159,10 +160,9 @@ function updateData(){
     })
   });
 }
-var options : any;
 function stockOption(query: string){
     getStockOption(query).then(({ data })=>{
-      options = data
+      options.value = data;
     })
 }
 onMounted(() => {
@@ -274,55 +274,32 @@ onMounted(() => {
       />
     </el-card>
 
-    <!-- 角色表单弹窗 -->
+    <!-- 股票表单弹窗 -->
     <el-dialog
       v-model="dialog.visible"
       :title="dialog.title"
       width="500px"
       @close="closeDialog"
     >
-      <el-form
-        ref="StockBuyFormRef"
-        :model="formData"
-        :rules="rules"
-        label-width="100px"
-      >
+      <el-form ref="StockBuyFormRef" :model="formData"  :rules="rules"  label-width="100px"  >
         <el-form-item label="股票名称" prop="name">
-          <!-- <el-input v-model="formData.name" placeholder="请输入账单名称" /> -->
-          <el-select
-        v-model="formData.name"
-        multiple
-        filterable
-        remote
-        reserve-keyword
-        placeholder="请输入账单名称"
-        :remote-method="stockOption"
-        :loading="loading"
-        style="width: 240px"
-      >
+        <el-select
+          v-model="formData.name"
+          filterable
+          remote
+          reserve-keyword
+          placeholder="请输入账单名称"
+          :remote-method="stockOption"
+          :loading="loading"
+          style="width: 240px"
+        >
         <el-option
           v-for="item in options"
-          :key="item.id"
-          :label="item.id"
-          :value="item.id"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
         />
       </el-select>
-          <!-- <el-select
-            v-model="formData.name"
-            placeholder="请输入账单名称"
-            filterable
-            remote
-            style="width: 240px"
-            automatic-dropdown
-            :remote-method="stockOption"
-          >
-            <el-option
-              v-for="item in options"
-              :key="item.id"
-              :label="item.code+item.name"
-              :value="item.code"
-            />
-          </el-select> -->
         </el-form-item>
         <el-form-item label="购买价格" >
           <el-input v-model="formData.buyPrice" placeholder="请输入购买价格" />
