@@ -40,10 +40,36 @@ export function getStockOption(query:string ): AxiosPromise<OptionType[]> {
  *
  * @param data
  */
-export function addDict(data: StockBuyForm) {
+export function addStockBuy(data: StockBuyForm) {
   return request({
     url: "/stock/buy",
     method: "post",
     data: data,
   });
 }
+/**
+ * 修改
+ *
+ * @param data
+ */
+
+export function updateStockBuy( data: StockBuyForm) {
+  return request({
+    url: "/stock/buy" ,
+    method: "put",
+    data: data,
+  });
+}
+
+/**
+ * 删除
+ *
+ * @param ids 字典项ID，多个以英文逗号(,)分割
+ */
+export function deleteStockBuys(ids: string) {
+  return request({
+    url: "/stock/buy/" + ids,
+    method: "delete",
+  });
+}
+

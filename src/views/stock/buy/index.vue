@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { getStockBuyPage,getStockBuyForm, getStockOption,addStockBuy} from "@/api/stock/buy";
+import { getStockBuyPage,getStockBuyForm, getStockOption,addStockBuy,updateStockBuy,deleteStockBuys} from "@/api/stock/buy";
 
 import { StockBuyPageVO, StockBuyQuery, StockBuyForm } from "@/api/stock/buy/types";
 import axios from "axios";
-import { reduce, result, size } from "lodash";
 
 const queryFormRef = ref(ElForm);
-const StockBuyFormRef = ref(ElForm);
+const stockBuyFormRef = ref(ElForm);
 
 const loading = ref(false);
 const ids = ref<number[]>([]);
@@ -26,14 +25,10 @@ const dialog = reactive({
 });
 
 const formData = reactive<StockBuyForm>({
-  code: "",
-  name: "",
-  buyPrice: 0,
-  buyNum: 0,
 });
 
 const rules = reactive({
-  name: [{ required: true, message: "请输入账单名称", trigger: "blur" }],
+  name: [{ required: true, message: "请选择股票名称", trigger: "blur" }],
 });
 
 
@@ -52,9 +47,13 @@ function handleQuery() {
       StockBuyList.value = data.list;
       total.value = data.total;
       clearTimeout(autoupdate);
-      autoupdate =  setInterval(() => {
+      if(new Date().getHours()>15 || new Date().getHours()<9){
+        updateData();
+      }else{
+        autoupdate =  setInterval(() => {
         updateData();
       }, updateTime*1000);
+      }
     })
     .finally(() => {
       loading.value = false;
@@ -85,14 +84,14 @@ function openDialog(StockBuyId?: number) {
   }
 }
 
-/** 角色保存提交 */
+/** 保存提交 */
 function handleSubmit() {
-  StockBuyFormRef.value.validate((valid: any) => {
+  stockBuyFormRef.value.validate((valid: any) => {
     if (valid) {
       loading.value = true;
       const StockBuyId = formData.id;
       if (StockBuyId) {
-        updateStockBuy(StockBuyId, formData)
+        updateStockBuy( formData)
           .then(() => {
             ElMessage.success("修改成功");
             closeDialog();
@@ -120,11 +119,9 @@ function closeDialog() {
 
 /** 重置表单 */
 function resetForm() {
-  StockBuyFormRef.value.resetFields();
-  StockBuyFormRef.value.clearValidate();
-
+  stockBuyFormRef.value.resetFields();
+  stockBuyFormRef.value.clearValidate();
   formData.id = undefined;
-  formData.status = 0;
 }
 
 /** 删除角色 */
@@ -141,12 +138,12 @@ function handleDelete(StockBuyId?: number) {
     type: "warning",
   }).then(() => {
     loading.value = true;
-    // deleteStockBuys(StockBuyIds)
-    //   .then(() => {
-    //     ElMessage.success("删除成功");
-    //     resetQuery();
-    //   })
-    //   .finally(() => (loading.value = false));
+    deleteStockBuys(StockBuyIds)
+      .then(() => {
+        ElMessage.success("删除成功");
+        resetQuery();
+      })
+      .finally(() => (loading.value = false));
   });
 }
 function updateData(){
@@ -165,6 +162,11 @@ function stockOption(query: string){
       options.value = data;
     })
 }
+function selectOptions(option: OptionType){
+  formData.code = option.value;
+  formData.name = option.label
+}
+
 onMounted(() => {
   handleQuery();
 });
@@ -281,7 +283,11 @@ onMounted(() => {
       width="500px"
       @close="closeDialog"
     >
-      <el-form ref="StockBuyFormRef" :model="formData"  :rules="rules"  label-width="100px"  >
+      <el-form
+      ref="stockBuyFormRef" 
+      :model="formData"  
+      :rules="rules" 
+      label-width="100px"  >
         <el-form-item label="股票名称" prop="name">
         <el-select
           v-model="formData.name"
@@ -292,12 +298,13 @@ onMounted(() => {
           :remote-method="stockOption"
           :loading="loading"
           style="width: 240px"
+          @change="selectOptions"
         >
         <el-option
           v-for="item in options"
           :key="item.value"
-          :label="item.label"
-          :value="item.value"
+          :label="item.label" 
+          :value="item"  
         />
       </el-select>
         </el-form-item>
