@@ -2,6 +2,7 @@
 import { getStockBuyPage,getStockBuyForm, getStockOption,addStockBuy,updateStockBuy,deleteStockBuys} from "@/api/stock/buy";
 
 import { StockBuyPageVO, StockBuyQuery, StockBuyForm } from "@/api/stock/buy/types";
+import { convertDateTimeFormat } from "@/utils/dateUtils";
 import axios from "axios";
 
 const queryFormRef = ref(ElForm);
@@ -158,6 +159,7 @@ function updateData(){
       element.allEarnings = ((stockData[3] - element.buyPrice!) * element.buyNum!).toFixed(2);
       element.dayGain = stockData[31];
       element.dayReturn = Number((stockData[31] * element.buyNum!).toFixed(2));
+      element.searchTime = convertDateTimeFormat(stockData[30]);
     })
   });
 }
@@ -209,7 +211,7 @@ onMounted(() => {
           @click="handleDelete()"
           ><i-ep-delete />删除</el-button
         >
-        数据刷新时间间隔：{{ updateTime }}秒
+        9:00~15:00高频刷新
       </template>
 
       <el-table
@@ -222,16 +224,16 @@ onMounted(() => {
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="65" align="center" />
-        <el-table-column label="股票编码" prop="code" min-width="100" />
-        <el-table-column label="股票名称" prop="name" width="150" />
-        <el-table-column label="市价" prop="price" width="150" >
+        <el-table-column label="股票编码" prop="code" width="100" />
+        <el-table-column label="股票名称" prop="name" width="120" />
+        <el-table-column label="市价" prop="price" width="120" >
           <template #default="scope">
             <span :style="{color: (scope.row.price>scope.row.buyPrice?'red':'green')}">{{ scope.row.price }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="购买数量" prop="buyNum" width="150" />
-        <el-table-column label="购买价格" prop="buyPrice" width="150" />
-        <el-table-column label="当日涨跌" prop="dayGain" width="150" > 
+        <el-table-column label="购买数量" prop="buyNum" width="120" />
+        <el-table-column label="购买价格" prop="buyPrice" width="100" />
+        <el-table-column label="当日涨跌" prop="dayGain" width="100" > 
           <template #default="scope">
             <span :style="{color: (scope.row.dayGain>0?'red':'green')}">{{ scope.row.dayGain }}</span>
           </template>
@@ -241,15 +243,16 @@ onMounted(() => {
             <span :style="{color: (scope.row.dayReturn>0?'red':'green')}">{{ scope.row.dayReturn }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="总收益" prop="allEarnings" width="100" > 
+        <el-table-column label="总收益" prop="allEarnings" width="120" > 
           <template #default="scope">
             <span :style="{color: (scope.row.allEarnings>0?'red':'green')}">{{ scope.row.allEarnings }}</span>
           </template>
         </el-table-column>
+        <el-table-column label="最近查询时间" prop="searchTime" width="160" />
         <el-table-column label="创建时间" prop="createTime" width="160" />
         <el-table-column label="修改时间" prop="updateTime" width="160" />
 
-        <el-table-column fixed="right" label="操作" width="150">
+        <el-table-column fixed="right" label="操作" min-width="140">
           <template #default="scope">
             <el-button
               type="primary"
