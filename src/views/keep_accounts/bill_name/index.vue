@@ -35,6 +35,7 @@ const formData = reactive<BillNameForm>({
 
 const rules = reactive({
   name: [{ required: true, message: "请输入账单名称", trigger: "blur" }],
+  remark: [{ required: true, message: "请输入账单备注", trigger: "blur" }],
 });
 
 
@@ -248,7 +249,7 @@ onMounted(() => {
         <el-form-item label="账单名称" prop="name">
           <el-input v-model="formData.name" placeholder="请输入账单名称" />
         </el-form-item>
-        <el-form-item label="备注" >
+        <el-form-item label="备注"  prop="remark" >
           <el-input v-model="formData.remark" placeholder="请输入备注" />
         </el-form-item>
         <el-form-item label="状态" prop="status">

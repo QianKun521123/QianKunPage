@@ -30,7 +30,7 @@ const formData = reactive<StockBuyForm>({
 
 const rules = reactive({
   name: [{ required: true, message: "请选择股票名称", trigger: "blur" }],
-  buyPrice: [{pattern: /^(0|[1-9][0-9]*)$/,required: true, message: "购买金额不能为空且必须是数字", trigger: "blur" }],
+  buyPrice: [{pattern: /^[1-9]\d*.\d*|0\.\d*[1-9]\d*$/,required: true, message: "购买金额不能为空且必须是数字", trigger: "blur" }],
   buyNum: [{ pattern: /^(0|[1-9][0-9]*)$/,required: true, message: "购买数量不能为空且必须是数字", trigger: "blur" }],
 });
 
@@ -173,6 +173,40 @@ function selectOptions(option: OptionType){
   formData.name = option.label
 }
 
+/**
+ * 
+ */
+
+ 
+//  function getSummaries(val){
+//   const { columns, data } = val;
+//   const sums = [];
+//   columns.forEach((column, index) => {
+//     if (index === 0) {
+//       sums[index] = '合计';
+//       return;
+//     }
+//     let values = []
+//     if (selectData.value.length===0) {
+//       values = data.map(item => Number(item[column.property]));
+//     }else{
+//       values = selectData.value.map(item => Number(item[column.property]));
+//     }
+//     // 对需要统计的列进行判断
+//     if (column.property === 'fpriceqty' ||column.property ==='fallAmount') {
+//       sums[index] = values.reduce((prev, curr) => {
+//         const value = Number(curr);
+//         if (!isNaN(value)) {
+//           return prev + curr;
+//         } else {
+//           return prev;
+//         }
+//       }, 0).toFixed(2);
+//     }
+//   });
+//   return sums
+// }
+
 onMounted(() => {
   handleQuery();
 });
@@ -223,6 +257,7 @@ onMounted(() => {
         border
         @selection-change="handleSelectionChange"
       >
+        <!-- :summary-method="getSummaries" -->
         <el-table-column type="selection" width="65" align="center" />
         <el-table-column label="股票编码" prop="code" width="100" />
         <el-table-column label="股票名称" prop="name" width="120" />
