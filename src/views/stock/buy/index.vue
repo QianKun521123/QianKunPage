@@ -4,6 +4,7 @@ import { getStockBuyPage,getStockBuyForm, getStockOption,addStockBuy,updateStock
 import { StockBuyPageVO, StockBuyQuery, StockBuyForm } from "@/api/stock/buy/types";
 import { convertDateTimeFormat } from "@/utils/dateUtils";
 import axios from "axios";
+import { number } from "echarts";
 
 const queryFormRef = ref(ElForm);
 const stockBuyFormRef = ref(ElForm);
@@ -160,9 +161,12 @@ function updateData(){
       element.dayGain = stockData[31];
       element.dayReturn = Number((stockData[31] * element.buyNum!).toFixed(2));
       element.searchTime = convertDateTimeFormat(stockData[30]);
+      element.costAmount = (element.buyNum! * element.buyPrice!).toFixed(2) ;
+      element.netAmount = netIncome(element);
     })
   });
 }
+
 function stockOption(query: string){
     getStockOption(query).then(({ data })=>{
       options.value = data;
@@ -206,7 +210,16 @@ function selectOptions(option: OptionType){
 //   });
 //   return sums
 // }
-
+function netIncome(item?: StockBuyPageVO){
+  const allMoney:number = Number((item!.price! * item!.buyNum!).toFixed(2));
+  const handleMoney:number = Number((allMoney! * 0.00001).toFixed(2)); // 过户0.001%
+  let procedureMoney:number = Number((allMoney! * 0.0003).toFixed(2));//手续 0.03%
+  const printingMoney:number = Number((allMoney * 0.0005) .toFixed(2));//印花 0.05%
+  if(procedureMoney<5){
+    procedureMoney = 5;
+  }
+  return  (allMoney-handleMoney-procedureMoney-printingMoney-Number(item?.costAmount)).toFixed(2);
+}
 onMounted(() => {
   handleQuery();
 });
@@ -259,33 +272,43 @@ onMounted(() => {
       >
         <!-- :summary-method="getSummaries" -->
         <el-table-column type="selection" width="65" align="center" />
-        <el-table-column label="股票编码" prop="code" width="100" />
-        <el-table-column label="股票名称" prop="name" width="120" />
-        <el-table-column label="市价" prop="price" width="120" >
+        <el-table-column label="股票编码" prop="code" width="90" />
+        <el-table-column label="股票名称" prop="name" width="85" />
+        <el-table-column label="购买数量" prop="buyNum" width="85" />
+        <el-table-column label="成本价格" width="85" > 
+          <template #default="scope">
+           {{ scope.row.buyPrice }}
+          </template>
+        </el-table-column>
+        <el-table-column label="成本金额"  prop="costAmount" width="85"/>
+        <el-table-column label="市价"  width="80" >
           <template #default="scope">
             <span :style="{color: (scope.row.price>scope.row.buyPrice?'red':'green')}">{{ scope.row.price }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="购买数量" prop="buyNum" width="120" />
-        <el-table-column label="购买价格" prop="buyPrice" width="100" />
-        <el-table-column label="当日涨跌" prop="dayGain" width="100" > 
+        <el-table-column label="当日涨跌" prop="dayGain" width="85" > 
           <template #default="scope">
             <span :style="{color: (scope.row.dayGain>0?'red':'green')}">{{ scope.row.dayGain }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="当日收益" prop="dayReturn" width="100" > 
+        <el-table-column label="当日收益" prop="dayReturn" width="85" > 
           <template #default="scope">
             <span :style="{color: (scope.row.dayReturn>0?'red':'green')}">{{ scope.row.dayReturn }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="总收益" prop="allEarnings" width="120" > 
+        <el-table-column label="总收益" prop="allEarnings" width="85" > 
           <template #default="scope">
             <span :style="{color: (scope.row.allEarnings>0?'red':'green')}">{{ scope.row.allEarnings }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="最近查询时间" prop="searchTime" width="160" />
-        <el-table-column label="创建时间" prop="createTime" width="160" />
-        <el-table-column label="修改时间" prop="updateTime" width="160" />
+        <el-table-column label="出手净收益" prop="netAmount" width="95"> 
+          <template #default="scope">
+            <span :style="{color: (scope.row.netAmount>0?'red':'green')}">{{ scope.row.netAmount }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="最近查询时间" prop="searchTime" width="155" />
+        <el-table-column label="创建时间" prop="createTime" width="155" />
+        <el-table-column label="修改时间" prop="updateTime" width="155" />
 
         <el-table-column fixed="right" label="操作" min-width="140">
           <template #default="scope">

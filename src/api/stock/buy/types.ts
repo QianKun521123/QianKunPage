@@ -50,6 +50,8 @@ export interface StockBuyPageVO {
   searchTime?: string;
   /** 删除状态(1:未删除;0:删除) */
   deleted?: number;
+  costAmount?: string;
+  netAmount?: number;
 }
 
 /**
