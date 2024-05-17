@@ -14,7 +14,7 @@ export interface UserInfo {
  * 账单名称查询对象类型
  */
 export interface BillNameQuery extends PageQuery {
-  // keywords?: string;
+  keywords?: string;
   // status?: number;
   // startTime?: string;
   // endTime?: string;
