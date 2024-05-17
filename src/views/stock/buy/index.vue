@@ -296,12 +296,12 @@ onMounted(() => {
             <span :style="{color: (scope.row.dayReturn>0?'red':'green')}">{{ scope.row.dayReturn }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="总收益" prop="allEarnings" width="85" > 
+        <el-table-column label="毛利" prop="allEarnings" width="85" > 
           <template #default="scope">
             <span :style="{color: (scope.row.allEarnings>0?'red':'green')}">{{ scope.row.allEarnings }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="出手净收益" prop="netAmount" width="95"> 
+        <el-table-column label="净利" prop="netAmount" width="95"> 
           <template #default="scope">
             <span :style="{color: (scope.row.netAmount>0?'red':'green')}">{{ scope.row.netAmount }}</span>
           </template>
