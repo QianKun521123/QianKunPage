@@ -162,7 +162,7 @@ function updateData(){
       element.dayReturn = Number((stockData[31] * element.buyNum!).toFixed(2));
       element.searchTime = convertDateTimeFormat(stockData[30]);
       element.costAmount = (element.buyNum! * element.buyPrice!).toFixed(2) ;
-      element.netAmount = netIncome(element);
+      element.netAmount = Number(netIncome(element));
     })
   });
 }
