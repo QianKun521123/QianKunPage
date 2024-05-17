@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getBillNamePage,getBillNameForm, addBillName, updateBillName, deleteBillName } from "@/api/money";
+import { getBillNamePage,getBillNameForm, addBillName, updateBillName, deleteBillName } from "@/api/money/name";
 
-import { BillNamePageVO, BillNameQuery, BillNameForm } from "@/api/money/types";
+import { BillNamePageVO, BillNameQuery, BillNameForm } from "@/api/money/name/types";
 
 defineOptions({
   name: "Role",
