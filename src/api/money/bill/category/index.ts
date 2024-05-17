@@ -6,9 +6,9 @@ import { BillGategoryPageVO,BillGategoryQuery,BillNameForm } from "./types";
  * 获取角色分页数据
  * @param queryParams
  */
-export function getBillGategoryPage(queryParams: BillGategoryQuery): AxiosPromise<PageResult<BillGategoryPageVO[]>> {
+export function getBillCategoryPage(queryParams: BillGategoryQuery): AxiosPromise<PageResult<BillGategoryPageVO[]>> {
   return request({
-    url: "/bill/gategory/page",
+    url: "/bill/category/page",
     method: "get",
     params: queryParams,
   });

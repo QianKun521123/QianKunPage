@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getBillGategoryPage,getBillNameForm, addBillName, updateBillName, deleteBillName } from "@/api/money/bill/category";
+import { getBillCategoryPage,getBillNameForm, addBillName, updateBillName, deleteBillName } from "@/api/money/bill/category";
 
 import { BillNamePageVO, BillNameQuery, BillNameForm } from "@/api/money/bill/name/types";
 
@@ -42,7 +42,7 @@ const rules = reactive({
 /** 查询 */
 function handleQuery() {
   loading.value = true;
-  getBillNamePage(queryParams)
+  getBillCategoryPage(queryParams)
     .then(({ data }) => {
       roleList.value = data.list;
       total.value = data.total;

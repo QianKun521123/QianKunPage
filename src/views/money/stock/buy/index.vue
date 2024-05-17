@@ -306,9 +306,9 @@ onMounted(() => {
             <span :style="{color: (scope.row.netAmount>0?'red':'green')}">{{ scope.row.netAmount }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="最近查询时间" prop="searchTime" width="155" />
-        <el-table-column label="创建时间" prop="createTime" width="155" />
-        <el-table-column label="修改时间" prop="updateTime" width="155" />
+        <el-table-column label="最近查询时间" prop="searchTime" width="160" />
+        <el-table-column label="创建时间" prop="createTime" width="160" />
+        <el-table-column label="修改时间" prop="updateTime" width="160" />
 
         <el-table-column fixed="right" label="操作" min-width="140">
           <template #default="scope">
