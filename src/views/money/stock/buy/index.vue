@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getStockBuyPage,getStockBuyForm, getStockOption,addStockBuy,updateStockBuy,deleteStockBuys} from "@/api/stock/buy";
+import { getStockBuyPage,getStockBuyForm, getStockOption,addStockBuy,updateStockBuy,deleteStockBuys} from "@/api/money/stock/buy";
 
-import { StockBuyPageVO, StockBuyQuery, StockBuyForm } from "@/api/stock/buy/types";
+import { StockBuyPageVO, StockBuyQuery, StockBuyForm } from "@/api/money/stock/buy/types";
 import { convertDateTimeFormat } from "@/utils/dateUtils";
 import axios from "axios";
 import { number } from "echarts";
