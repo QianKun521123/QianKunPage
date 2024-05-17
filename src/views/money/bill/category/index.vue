@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getBillCategoryPage,getBillNameForm, addBillName, updateBillName, deleteBillName } from "@/api/money/bill/category";
+import { getBillCategoryPage,getBillCategoryForm, addBillName, updateBillName, deleteBillName } from "@/api/money/bill/category";
 
 import { BillNamePageVO, BillNameQuery, BillNameForm } from "@/api/money/bill/name/types";
 
@@ -68,7 +68,7 @@ function openDialog(roleId?: number) {
   dialog.visible = true;
   if (roleId) {
     dialog.title = "修改角色";
-    getBillNameForm(roleId).then(({ data }) => {
+    getBillCategoryForm(roleId).then(({ data }) => {
       Object.assign(formData, data);
     });
   } else {
@@ -246,7 +246,7 @@ onMounted(() => {
         :rules="rules"
         label-width="100px"
       >
-        <el-form-item label="账单名称" prop="name">
+        <el-form-item label="分类名称" prop="name">
           <el-input v-model="formData.name" placeholder="请输入账单名称" />
         </el-form-item>
         <el-form-item label="备注"  prop="remark" >

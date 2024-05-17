@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 import { AxiosPromise } from "axios";
-import { BillGategoryPageVO,BillGategoryQuery,BillNameForm } from "./types";
+import { BillGategoryPageVO,BillGategoryQuery,BillCategoryForm } from "./types";
 
 /**
  * 获取角色分页数据
@@ -18,9 +18,9 @@ export function getBillCategoryPage(queryParams: BillGategoryQuery): AxiosPromis
  *
  * @param id
  */
-export function getBillNameForm(id: number): AxiosPromise<BillNameForm> {
+export function getBillCategoryForm(id: number): AxiosPromise<BillCategoryForm> {
   return request({
-    url: "/bill/name/" + id ,
+    url: "/bill/category/" + id ,
     method: "get",
   });
 }

@@ -44,7 +44,7 @@ export interface BillGategoryPageVO {
 /**
  * 账单名称表单类型
  */
-export interface BillNameForm {
+export interface BillCategoryForm {
   /** 账单名称ID */
   id?: number;
   /** 账单名称 */
