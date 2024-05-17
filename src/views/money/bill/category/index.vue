@@ -190,13 +190,13 @@ onMounted(() => {
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="账单名称" prop="name" min-width="100" />
+        <el-table-column label="分类名称" prop="name" min-width="100" />
         <el-table-column label="备注" prop="remark" width="150" />
 
         <el-table-column label="状态" align="center" width="100">
           <template #default="scope">
-            <el-tag v-if="scope.row.status === 0" type="success">正常</el-tag>
-            <el-tag v-else type="info">删除</el-tag>
+            <el-tag v-if="scope.row.status === 0" type="success">启用</el-tag>
+            <el-tag v-else type="info">停用</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="创建时间" prop="createTime" width="200" />
