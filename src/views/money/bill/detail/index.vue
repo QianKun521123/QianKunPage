@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getBillDetailPage,getBillCategoryForm, addBillCategory, updateBillCategory, deleteBillCategory } from "@/api/money/bill/detail";
 
-import { BillDetailPageVO, BillDetailQuery, BillCategoryForm } from "@/api/money/bill/detail/types";
+import { BillDetailPageVO, BillDetailQuery, BillDetailForm } from "@/api/money/bill/detail/types";
 
 
 const queryFormRef = ref(ElForm);
@@ -22,11 +22,9 @@ const dialog = reactive({
   visible: false,
 });
 
-const formData = reactive<BillCategoryForm>({
-  remark: "",
-  name: "",
-  status: 0,
-  deleted: 0,
+const formData = reactive<BillDetailForm>({
+  money: 0,
+  type: 1,
 });
 
 const rules = reactive({
@@ -63,12 +61,12 @@ function handleSelectionChange(selection: any) {
 function openDialog(roleId?: number) {
   dialog.visible = true;
   if (roleId) {
-    dialog.title = "修改分类";
+    dialog.title = "修改账单明细";
     getBillCategoryForm(roleId).then(({ data }) => {
       Object.assign(formData, data);
     });
   } else {
-    dialog.title = "新增分类";
+    dialog.title = "新增账单明细";
   }
 }
 
@@ -111,7 +109,7 @@ function resetForm() {
   roleFormRef.value.clearValidate();
 
   formData.id = undefined;
-  formData.status = 0;
+  formData.type = 1;
 }
 
 /** 删除角色 */
@@ -243,16 +241,13 @@ onMounted(() => {
         :rules="rules"
         label-width="100px"
       >
-        <el-form-item label="分类名称" prop="name">
-          <el-input v-model="formData.name" placeholder="请输入分类名称" />
-        </el-form-item>
-        <el-form-item label="备注"  prop="remark" >
-          <el-input v-model="formData.remark" placeholder="请输入备注" />
+        <el-form-item label="收支金额" prop="name">
+          <el-input v-model="formData.money" placeholder="请输入收支金额" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
-          <el-radio-group v-model="formData.status">
-            <el-radio :label="0">正常</el-radio>
-            <el-radio :label="1">停用</el-radio>
+          <el-radio-group v-model="formData.type">
+            <el-radio :label=1>收入</el-radio>
+            <el-radio :label=0>支出</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>

@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 import { AxiosPromise } from "axios";
-import { BillDetailPageVO,BillDetailQuery,BillCategoryForm } from "./types";
+import { BillDetailPageVO,BillDetailQuery,BillDetailForm } from "./types";
 
 /**
  * 获取角色分页数据
@@ -18,9 +18,9 @@ export function getBillDetailPage(queryParams: BillDetailPageVO): AxiosPromise<P
  *
  * @param id
  */
-export function getBillCategoryForm(id: number): AxiosPromise<BillCategoryForm> {
+export function getBillCategoryForm(id: number): AxiosPromise<BillDetailForm> {
   return request({
-    url: "/bill/category/" + id ,
+    url: "/bill/detail/" + id ,
     method: "get",
   });
 }
@@ -29,9 +29,9 @@ export function getBillCategoryForm(id: number): AxiosPromise<BillCategoryForm> 
  *
  * @param data
  */
-export function addBillCategory(data: BillCategoryForm){
+export function addBillCategory(data: BillDetailForm){
   return request({
-    url: "/bill/category",
+    url: "/bill/detail",
     method: "post",
     data: data,
   });
@@ -44,9 +44,9 @@ export function addBillCategory(data: BillCategoryForm){
  * @param id
  * @param data
  */
-export function updateBillCategory( data: BillCategoryForm) {
+export function updateBillCategory( data: BillDetailForm) {
   return request({
-    url: "/bill/category",
+    url: "/bill/detail",
     method: "put",
     data: data,
   });
@@ -60,7 +60,7 @@ export function updateBillCategory( data: BillCategoryForm) {
  */
 export function deleteBillCategory(ids: string) {
   return request({
-    url: "/bill/category/" + ids,
+    url: "/bill/detail/" + ids,
     method: "delete",
   });
 }

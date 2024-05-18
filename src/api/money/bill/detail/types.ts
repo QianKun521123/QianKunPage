@@ -42,16 +42,16 @@ export interface BillDetailPageVO {
 /**
  * 账单名称表单类型
  */
-export interface BillCategoryForm {
-  /** 账单名称ID */
+export interface BillDetailForm {
+  /** 账单明细ID */
   id?: number;
-  /** 账单名称 */
-  name?: string;
-  /** 账单名称备注 */
-  remark?: string;
-  /** 删除状态(1:未删除;0:删除) */
-  deleted?: number;
-  /** 停用状态(1:停用;0:启用) */
-  status?: number;
+  /** 账单名称ID */
+  billNameId?: number;
+  /** 分类id */
+  categoryId?: number;
+  /** 收支金额 */
+  money?: number;
+  /** 收支类型(1:收入;0:支出) */
+  type?: number;
   
 }
