@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { getBillDetailPage,getBillCategoryForm, addBillCategory, updateBillCategory, deleteBillCategory } from "@/api/money/bill/detail";
-
+import { getBillCategoryOptions } from "@/api/money/bill/category";
 import { BillDetailPageVO, BillDetailQuery, BillDetailForm } from "@/api/money/bill/detail/types";
 
 
 const queryFormRef = ref(ElForm);
 const roleFormRef = ref(ElForm);
 
+const categoryOptions = ref<OptionType[]>(); // 分类列表
 const loading = ref(false);
 const ids = ref<number[]>([]);
 const total = ref(0);
@@ -134,9 +135,14 @@ function handleDelete(roleId?: number) {
       .finally(() => (loading.value = false));
   });
 }
-
+function getBillCategoryOptionsAction(){
+  getBillCategoryOptions().then((response) => {
+    categoryOptions.value = response.data;
+  });
+}
 onMounted(() => {
   handleQuery();
+  getBillCategoryOptionsAction();
 });
 </script>
 
@@ -180,22 +186,24 @@ onMounted(() => {
         v-loading="loading"
         :data="roleList"
         highlight-current-row
+        :show-overflow-tooltip="true"
         border
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="收支类型" prop="type" min-width="100" >
+        <el-table-column label="收支类型" prop="type" min-width="85" >
           <template #default="scope">
             <el-tag v-if="scope.row.type === 1" type="success">收入</el-tag>
             <el-tag v-else type="info">支出</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="收支金额" prop="money" min-width="100" />
-        <el-table-column label="分类" prop="billName" min-width="100" />
-        <el-table-column label="备注" prop="remark" width="150" />
+        <el-table-column label="账单" prop="billName" min-width="100" />
+        <el-table-column label="分类" prop="categoryName" min-width="100" />
+        <el-table-column label="备注" prop="remark" />
 
-        <el-table-column label="创建时间" prop="createTime" width="200" />
-        <el-table-column label="修改时间" prop="updateTime" width="200" />
+        <el-table-column label="创建时间" prop="createTime" width="160" />
+        <el-table-column label="修改时间" prop="updateTime" width="160" />
 
         <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">

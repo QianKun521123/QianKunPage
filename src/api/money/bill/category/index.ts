@@ -64,3 +64,13 @@ export function deleteBillCategory(ids: string) {
     method: "delete",
   });
 }
+/**
+ * 查询选项
+ * @param queryParams
+ */
+export function getBillCategoryOptions(): AxiosPromise<OptionType[]> {
+  return request({
+    url: "/bill/category/options",
+    method: "get",
+  });
+}
