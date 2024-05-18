@@ -249,6 +249,27 @@ onMounted(() => {
         :rules="rules"
         label-width="100px"
       >
+
+      <el-form-item label="账单" prop="name">
+
+      </el-form-item>
+      <el-form-item label="分类" prop="name">
+          <el-select
+            v-model="formData.categoryId"
+            placeholder="请选择分类"
+            size="large"
+            clearable
+            style="width: 240px"
+          >
+            <el-option
+              v-for="item in categoryOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+      
         <el-form-item label="收支金额" prop="name">
           <el-input v-model="formData.money" placeholder="请输入收支金额" />
         </el-form-item>
