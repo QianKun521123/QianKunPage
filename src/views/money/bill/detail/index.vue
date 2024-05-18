@@ -26,6 +26,7 @@ const dialog = reactive({
 const formData = reactive<BillDetailForm>({
   money: 0,
   type: 1,
+  categoryId: undefined
 });
 
 const rules = reactive({
@@ -253,11 +254,12 @@ onMounted(() => {
       <el-form-item label="账单" prop="name">
 
       </el-form-item>
-      <el-form-item label="分类" prop="name">
+      <el-form-item label="分类" prop="categoryId">
           <el-select
             v-model="formData.categoryId"
             placeholder="请选择分类"
             size="large"
+            filterable
             clearable
             style="width: 240px"
           >
