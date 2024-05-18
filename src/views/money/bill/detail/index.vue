@@ -171,7 +171,7 @@ onMounted(() => {
         </el-form-item>
         <el-form-item label="账单">
           <el-select
-            v-model="queryFormRef.billNameId"
+            v-model="queryParams.billNameId"
             placeholder="请选择分类"
             size="large"
             filterable
@@ -179,7 +179,7 @@ onMounted(() => {
             style="width: 240px"
           >
             <el-option
-              v-for="item in categoryOptions"
+              v-for="item in billNameOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -188,7 +188,7 @@ onMounted(() => {
         </el-form-item>
         <el-form-item label="分类">
           <el-select
-            v-model="queryFormRef.categoryId"
+            v-model="queryParams.categoryId"
             placeholder="请选择分类"
             size="large"
             filterable
