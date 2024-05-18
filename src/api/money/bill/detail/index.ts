@@ -1,14 +1,14 @@
 import request from "@/utils/request";
 import { AxiosPromise } from "axios";
-import { BillGategoryPageVO,BillGategoryQuery,BillCategoryForm } from "./types";
+import { BillDetailPageVO,BillDetailQuery,BillCategoryForm } from "./types";
 
 /**
  * 获取角色分页数据
  * @param queryParams
  */
-export function getBillCategoryPage(queryParams: BillGategoryQuery): AxiosPromise<PageResult<BillGategoryPageVO[]>> {
+export function getBillDetailPage(queryParams: BillDetailPageVO): AxiosPromise<PageResult<BillDetailPageVO[]>> {
   return request({
-    url: "/bill/category/page",
+    url: "/bill/detail/page",
     method: "get",
     params: queryParams,
   });

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getBillCategoryPage,getBillCategoryForm, addBillCategory, updateBillCategory, deleteBillCategory } from "@/api/money/bill/category";
+import { getBillDetailPage,getBillCategoryForm, addBillCategory, updateBillCategory, deleteBillCategory } from "@/api/money/bill/detail";
 
-import { BillCategoryPageVO, BillCategoryQuery, BillCategoryForm } from "@/api/money/bill/name/types";
+import { BillDetailPageVO, BillDetailQuery, BillCategoryForm } from "@/api/money/bill/detail/types";
 
 
 const queryFormRef = ref(ElForm);
@@ -10,12 +10,12 @@ const roleFormRef = ref(ElForm);
 const loading = ref(false);
 const ids = ref<number[]>([]);
 const total = ref(0);
-const queryParams = reactive<BillCategoryQuery>({
+const queryParams = reactive<BillDetailQuery>({
   pageNum: 1,
   pageSize: 10,
 });
 
-const roleList = ref<BillCategoryPageVO[]>();
+const roleList = ref<BillDetailPageVO[]>();
 
 const dialog = reactive({
   title: "",
@@ -38,7 +38,7 @@ const rules = reactive({
 /** 查询 */
 function handleQuery() {
   loading.value = true;
-  getBillCategoryPage(queryParams)
+  getBillDetailPage(queryParams)
     .then(({ data }) => {
       roleList.value = data.list;
       total.value = data.total;
@@ -186,15 +186,16 @@ onMounted(() => {
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="分类名称" prop="name" min-width="100" />
-        <el-table-column label="备注" prop="remark" width="150" />
-
-        <el-table-column label="状态" align="center" width="100">
+        <el-table-column label="收支类型" prop="type" min-width="100" >
           <template #default="scope">
-            <el-tag v-if="scope.row.status === 0" type="success">启用</el-tag>
-            <el-tag v-else type="info">停用</el-tag>
+            <el-tag v-if="scope.row.type === 1" type="success">收入</el-tag>
+            <el-tag v-else type="info">支出</el-tag>
           </template>
         </el-table-column>
+        <el-table-column label="收支金额" prop="money" min-width="100" />
+        <el-table-column label="分类" prop="billName" min-width="100" />
+        <el-table-column label="备注" prop="remark" width="150" />
+
         <el-table-column label="创建时间" prop="createTime" width="200" />
         <el-table-column label="修改时间" prop="updateTime" width="200" />
 
