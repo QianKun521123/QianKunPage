@@ -3,10 +3,6 @@ import { getBillCategoryPage,getBillCategoryForm, addBillCategory, updateBillCat
 
 import { BillCategoryPageVO, BillCategoryQuery, BillCategoryForm } from "@/api/money/bill/name/types";
 
-defineOptions({
-  name: "Role",
-  inheritAttrs: false,
-});
 
 const queryFormRef = ref(ElForm);
 const roleFormRef = ref(ElForm);
@@ -63,20 +59,20 @@ function handleSelectionChange(selection: any) {
   ids.value = selection.map((item: any) => item.id);
 }
 
-/** 打开角色表单弹窗 */
+/** 打开分类表单弹窗 */
 function openDialog(roleId?: number) {
   dialog.visible = true;
   if (roleId) {
-    dialog.title = "修改角色";
+    dialog.title = "修改分类";
     getBillCategoryForm(roleId).then(({ data }) => {
       Object.assign(formData, data);
     });
   } else {
-    dialog.title = "新增角色";
+    dialog.title = "新增分类";
   }
 }
 
-/** 角色保存提交 */
+/** 分类保存提交 */
 function handleSubmit() {
   roleFormRef.value.validate((valid: any) => {
     if (valid) {
@@ -153,7 +149,7 @@ onMounted(() => {
         <el-form-item prop="keywords" label="关键字">
           <el-input
             v-model="queryParams.keywords"
-            placeholder="账单名称"
+            placeholder="分类名称"
             clearable
             @keyup.enter="handleQuery"
           />
@@ -247,7 +243,7 @@ onMounted(() => {
         label-width="100px"
       >
         <el-form-item label="分类名称" prop="name">
-          <el-input v-model="formData.name" placeholder="请输入账单名称" />
+          <el-input v-model="formData.name" placeholder="请输入分类名称" />
         </el-form-item>
         <el-form-item label="备注"  prop="remark" >
           <el-input v-model="formData.remark" placeholder="请输入备注" />
