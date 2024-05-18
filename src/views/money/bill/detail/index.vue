@@ -169,6 +169,40 @@ onMounted(() => {
             @keyup.enter="handleQuery"
           />
         </el-form-item>
+        <el-form-item label="账单">
+          <el-select
+            v-model="queryFormRef.billNameId"
+            placeholder="请选择分类"
+            size="large"
+            filterable
+            clearable
+            style="width: 240px"
+          >
+            <el-option
+              v-for="item in categoryOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="分类">
+          <el-select
+            v-model="queryFormRef.categoryId"
+            placeholder="请选择分类"
+            size="large"
+            filterable
+            clearable
+            style="width: 240px"
+          >
+            <el-option
+              v-for="item in categoryOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
 
         <el-form-item>
           <el-button type="primary" @click="handleQuery"
