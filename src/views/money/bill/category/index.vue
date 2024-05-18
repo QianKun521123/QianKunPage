@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getBillCategoryPage,getBillCategoryForm, addBillName, updateBillName, deleteBillName } from "@/api/money/bill/category";
+import { getBillCategoryPage,getBillCategoryForm, addBillCategory, updateBillCategory, deleteBillCategory } from "@/api/money/bill/category";
 
-import { BillNamePageVO, BillNameQuery, BillNameForm } from "@/api/money/bill/name/types";
+import { BillCategoryPageVO, BillCategoryQuery, BillCategoryForm } from "@/api/money/bill/name/types";
 
 defineOptions({
   name: "Role",
@@ -14,19 +14,19 @@ const roleFormRef = ref(ElForm);
 const loading = ref(false);
 const ids = ref<number[]>([]);
 const total = ref(0);
-const queryParams = reactive<BillNameQuery>({
+const queryParams = reactive<BillCategoryQuery>({
   pageNum: 1,
   pageSize: 10,
 });
 
-const roleList = ref<BillNamePageVO[]>();
+const roleList = ref<BillCategoryPageVO[]>();
 
 const dialog = reactive({
   title: "",
   visible: false,
 });
 
-const formData = reactive<BillNameForm>({
+const formData = reactive<BillCategoryForm>({
   remark: "",
   name: "",
   status: 0,
@@ -83,7 +83,7 @@ function handleSubmit() {
       loading.value = true;
       const roleId = formData.id;
       if (roleId) {
-        updateBillName( formData)
+        updateBillCategory( formData)
           .then(() => {
             ElMessage.success("修改成功");
             closeDialog();
@@ -91,7 +91,7 @@ function handleSubmit() {
           })
           .finally(() => (loading.value = false));
       } else {
-        addBillName(formData)
+        addBillCategory(formData)
           .then(() => {
             ElMessage.success("新增成功");
             closeDialog();
@@ -115,7 +115,7 @@ function resetForm() {
   roleFormRef.value.clearValidate();
 
   formData.id = undefined;
-  formData.status = 1;
+  formData.status = 0;
 }
 
 /** 删除角色 */
@@ -132,7 +132,7 @@ function handleDelete(roleId?: number) {
     type: "warning",
   }).then(() => {
     loading.value = true;
-    deleteBillName(roleIds)
+    deleteBillCategory(roleIds)
       .then(() => {
         ElMessage.success("删除成功");
         resetQuery();

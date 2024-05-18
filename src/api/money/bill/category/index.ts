@@ -29,9 +29,9 @@ export function getBillCategoryForm(id: number): AxiosPromise<BillCategoryForm> 
  *
  * @param data
  */
-export function addBillName(data: BillNameForm){
+export function addBillCategory(data: BillCategoryForm){
   return request({
-    url: "/bill/name",
+    url: "/bill/category",
     method: "post",
     data: data,
   });
@@ -44,9 +44,9 @@ export function addBillName(data: BillNameForm){
  * @param id
  * @param data
  */
-export function updateBillName( data: BillNameForm) {
+export function updateBillCategory( data: BillCategoryForm) {
   return request({
-    url: "/bill/name",
+    url: "/bill/category",
     method: "put",
     data: data,
   });
@@ -58,9 +58,9 @@ export function updateBillName( data: BillNameForm) {
  *
  * @param ids
  */
-export function deleteBillName(ids: string) {
+export function deleteBillCategory(ids: string) {
   return request({
-    url: "/bill/name/" + ids,
+    url: "/bill/category/" + ids,
     method: "delete",
   });
 }
