@@ -64,3 +64,14 @@ export function deleteBillName(ids: string) {
     method: "delete",
   });
 }
+
+/**
+ * 查询选项
+ * @param queryParams
+ */
+export function getBillNameOptions(): AxiosPromise<OptionType[]> {
+  return request({
+    url: "/bill/name/options",
+    method: "get",
+  });
+}

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getBillDetailPage,getBillCategoryForm, addBillCategory, updateBillCategory, deleteBillCategory } from "@/api/money/bill/detail";
 import { getBillCategoryOptions } from "@/api/money/bill/category";
+import { getBillNameOptions } from "@/api/money/bill/name";
 import { BillDetailPageVO, BillDetailQuery, BillDetailForm } from "@/api/money/bill/detail/types";
 
 
@@ -8,6 +9,7 @@ const queryFormRef = ref(ElForm);
 const roleFormRef = ref(ElForm);
 
 const categoryOptions = ref<OptionType[]>(); // 分类列表
+const billNameOptions = ref<OptionType[]>(); // 账单列表
 const loading = ref(false);
 const ids = ref<number[]>([]);
 const total = ref(0);
@@ -30,8 +32,9 @@ const formData = reactive<BillDetailForm>({
 });
 
 const rules = reactive({
-  name: [{ required: true, message: "请输入账单名称", trigger: "blur" }],
-  remark: [{ required: true, message: "请输入账单备注", trigger: "blur" }],
+  money: [{ required: true, message: "请输入收支金额", trigger: "blur" }],
+  categoryId: [{ required: true, message: "请选择分类", trigger: "blur" }],
+  billNameId: [{ required: true, message: "请选择账单", trigger: "blur" }],
 });
 
 
@@ -141,9 +144,16 @@ function getBillCategoryOptionsAction(){
     categoryOptions.value = response.data;
   });
 }
+function getBillNameOptionsAction(){
+  getBillNameOptions().then((response) => {
+    billNameOptions.value = response.data;
+  });
+}
+
 onMounted(() => {
   handleQuery();
   getBillCategoryOptionsAction();
+  getBillNameOptionsAction();
 });
 </script>
 
@@ -251,8 +261,22 @@ onMounted(() => {
         label-width="100px"
       >
 
-      <el-form-item label="账单" prop="name">
-
+      <el-form-item label="账单" prop="billNameId">
+          <el-select
+            v-model="formData.billNameId"
+            placeholder="请选择分类"
+            size="large"
+            filterable
+            clearable
+            style="width: 240px"
+          >
+            <el-option
+              v-for="item in billNameOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
       </el-form-item>
       <el-form-item label="分类" prop="categoryId">
           <el-select
