@@ -69,3 +69,19 @@ export interface StockBuyForm {
   /** 购买价格 */
   buyPrice?: number;
 }
+
+/**
+ * 账单名称表单类型
+ */
+export interface StockBuyMoreInfoBase {
+  /** 股票编码 */
+  code?: string,
+  /** 股票名称 */
+  name?: string,
+  /** 市价 */
+  price?: string,
+  /** 今开 */
+  todayOpen?: string,
+  /** 最高 */
+  theTallest?: string,
+}
