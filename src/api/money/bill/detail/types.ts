@@ -53,5 +53,7 @@ export interface BillDetailForm {
   money?: number;
   /** 收支类型(1:收入;0:支出) */
   type?: number;
+  /** 备注 */
+  remark?: string;
   
 }

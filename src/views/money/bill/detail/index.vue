@@ -339,8 +339,16 @@ onMounted(() => {
             <el-radio :label=0>支出</el-radio>
           </el-radio-group>
         </el-form-item>
+        
+        <el-form-item label="分类" >
+          <el-input
+            v-model="formData.remark"
+            placeholder="请输入收支备注"
+            clearable
+            type="textarea"
+          />
+        </el-form-item>
       </el-form>
-
       <template #footer>
         <div class="dialog-footer">
           <el-button type="primary" @click="handleSubmit">确 定</el-button>
