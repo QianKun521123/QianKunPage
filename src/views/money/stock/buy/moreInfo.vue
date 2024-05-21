@@ -4,7 +4,11 @@
 /** 引入 */
 import {StockBuyMoreInfoBase} from "@/api/money/stock/buy/types";
 import axios from "axios";
-
+import timeSharingChart from "./timeSharingChart.vue";
+/** 注册组件 */
+components:{
+  timeSharingChart
+}
 /** 初始化参数 */
 let autoUpdateMoreinfo: any;
 const parentData = defineProps(['parentCode'])
@@ -132,6 +136,20 @@ function updateMoreInfoData(code?: string) {
         <el-col :span="4" style="display: flex;">
           <span class="span1">流通市值：</span><span class="span2">{{ moreInfoData.circulatingMarketValue }}</span>
         </el-col>
+      </el-row>
+    </div>
+    
+    <!-- Echarts 图表 -->
+    <div>
+
+      <el-row :gutter="10" class="mt-3">
+        <el-col :sm="24" :lg="24" class="mb-2">
+          <timeSharingChart
+            id="timeSharingChart"
+            height="400px"
+            width="100%"
+            class="bg-[var(--el-bg-color-overlay)]"/>
+      </el-col>
       </el-row>
     </div>
   </div>
