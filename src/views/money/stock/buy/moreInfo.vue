@@ -12,9 +12,9 @@ components:{
 /** 初始化参数 */
 let autoUpdateMoreinfo: any;
 const parentData = defineProps(['parentCode'])
-const moreInfoData = ref<StockBuyMoreInfoBase>({
+const moreInfoData = ref<StockBuyMoreInfoBase>({});
+const activeName = ref('timeSharingChart');
 
-});
 /** 打开角色表单弹窗 */
 function openMoreInfoDialog(code?: string) {
   clearTimeout(autoUpdateMoreinfo);
@@ -141,16 +141,23 @@ function updateMoreInfoData(code?: string) {
     
     <!-- Echarts 图表 -->
     <div>
+      <el-tabs v-model="activeName" class="demo-tabs">
+        <el-tab-pane label="分时" name="timeSharingChart">
 
-      <el-row :gutter="10" class="mt-3">
-        <el-col :sm="24" :lg="24" class="mb-2">
-          <timeSharingChart
-            id="timeSharingChart"
-            height="400px"
-            width="100%"
-            class="bg-[var(--el-bg-color-overlay)]"/>
-      </el-col>
-      </el-row>
+          <el-row :gutter="10" class="mt-3">
+            <el-col :sm="24" :lg="18" class="mb-2">
+              <timeSharingChart
+                id="timeSharingChart"
+                height="400px"
+                width="100%"
+                class="bg-[var(--el-bg-color-overlay)]"/>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+        <el-tab-pane label="日K" name="dayChart">Config</el-tab-pane>
+        <el-tab-pane label="Role" name="third">Role</el-tab-pane>
+        <el-tab-pane label="Task" name="fourth">Task</el-tab-pane>
+    </el-tabs>
     </div>
   </div>
 </template>
