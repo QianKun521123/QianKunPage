@@ -84,4 +84,36 @@ export interface StockBuyMoreInfoBase {
   todayOpen?: string,
   /** 最高 */
   theTallest?: string,
+  /** 最低 */
+  minimum?: string,
+  /** 涨停 */
+  limitUp?: string,
+  /** 跌停 */
+  limitDown?: string,
+  /** 涨跌额 */
+  range?: string,
+  /** 涨跌幅 */
+  priceLimit?: string,
+  /** 昨收 */
+  yesterdayClosing?: string,
+  /** 换手 */
+  changeHands?: string,
+  /** 量比 */
+  volumeRatio?: string,
+  /** 成交量 */
+  tradingVolume?: string,
+  /** 成交额 */
+  volumeBusiness?: string,
+  /** 市盈(动) */
+  marketSurplus?: string,
+  /** 市净 */
+  marketNet?: string,
+  /** 总市值 */
+  totalMarketValue?: string,
+  /** 流通市值 */
+  circulatingMarketValue?: string,
+  /** 静态市盈 */
+  staticSurplus?: string,
+  /** 滚动市盈 */
+  rollingSurplus?: string,
 }

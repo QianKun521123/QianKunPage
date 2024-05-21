@@ -468,7 +468,7 @@ onMounted(() => {
     <el-dialog
       v-model="moreInfodialog.visible"
       :title="moreInfodialog.title"
-      width="900px"
+      width="1000px"
       append-to-body
       @close="closeMoreInfoDialog">
       <moreInfo v-if="moreInfodialog.visible" :parentCode="parentCode"></moreInfo>
