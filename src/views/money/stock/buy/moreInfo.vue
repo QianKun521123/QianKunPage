@@ -11,7 +11,7 @@ components:{
 }
 /** 初始化参数 */
 let autoUpdateMoreinfo: any;
-const parentData = defineProps(['parentCode'])
+const parentData = defineProps(['parentCode']) ;
 const moreInfoData = ref<StockBuyMoreInfoBase>({});
 const activeName = ref('timeSharingChart');
 
@@ -37,7 +37,6 @@ onMounted(() => {
 function updateMoreInfoData(code?: string) {
   axios.get("https://sqt.gtimg.cn/q=" + code).then((res) => {
     let stockData = res.data.split("~");
-    console.log(stockData)
     moreInfoData.value.price = stockData[3];
     moreInfoData.value.range = stockData[31]+"%";
     moreInfoData.value.priceLimit = stockData[32];
@@ -150,6 +149,7 @@ function updateMoreInfoData(code?: string) {
                 id="timeSharingChart"
                 height="400px"
                 width="100%"
+                :parentCode="parentData.parentCode"
                 class="bg-[var(--el-bg-color-overlay)]"/>
             </el-col>
           </el-row>
