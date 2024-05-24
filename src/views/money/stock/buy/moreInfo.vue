@@ -38,8 +38,8 @@ function updateMoreInfoData(code?: string) {
   axios.get("https://sqt.gtimg.cn/q=" + code).then((res) => {
     let stockData = res.data.split("~");
     moreInfoData.value.price = stockData[3];
-    moreInfoData.value.range = stockData[31]+"%";
-    moreInfoData.value.priceLimit = stockData[32];
+    moreInfoData.value.range = stockData[31];
+    moreInfoData.value.priceLimit = stockData[32]+"%";
     moreInfoData.value.code = stockData[2];
     moreInfoData.value.name = stockData[1];
     moreInfoData.value.todayOpen = stockData[5];
@@ -148,7 +148,7 @@ function updateMoreInfoData(code?: string) {
               <timeSharingChart
                 id="timeSharingChart"
                 height="400px"
-                width="100%"
+                width="700px"
                 :parentCode="parentData.parentCode"
                 class="bg-[var(--el-bg-color-overlay)]"/>
             </el-col>
