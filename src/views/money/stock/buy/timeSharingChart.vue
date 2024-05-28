@@ -72,14 +72,10 @@ function dataEncapsulation(res: any) {
 
     minY.value = Math.min(...dataListY.value);
     maxY.value = Math.max(...dataListY.value);
-    let tempValue = (maxY.value - Number(yesterdayClosing.value)) > (Number(yesterdayClosing.value) - minY.value) ? (maxY.value - Number(yesterdayClosing.value)) : (Number(yesterdayClosing.value) - minY.value)
-    // for (let i = 0; i < 7; i++) {
-    //     flagY.value.push((Number(yesterdayClosing.value) - Number(Number(tempValue / 3).toFixed(2)) * (3 - i)).toFixed(2))
-    // }
-    
-    minY.value = Number((Number(yesterdayClosing.value) - Number(Number(tempValue / 3).toFixed(2)) * 3).toFixed(2))
-    maxY.value = Number((Number(yesterdayClosing.value) + Number(Number(tempValue / 3).toFixed(2)) * 3).toFixed(2))
-    console.log(flagY.value);
+    let tempValue = (maxY.value - Number(yesterdayClosing.value)) > (Number(yesterdayClosing.value) - minY.value) ? (maxY.value - Number(yesterdayClosing.value)).toFixed(2) : (Number(yesterdayClosing.value) - minY.value).toFixed(2)
+    minY.value = Number(yesterdayClosing.value) - Number(tempValue)
+    maxY.value = Number(yesterdayClosing.value) + Number(tempValue)
+    console.log(yesterdayClosing.value+":"+Number(tempValue))
     drawTimeSharingChartInit()
 }
 var option: any;
@@ -126,6 +122,12 @@ function drawTimeSharingChartInit() {
             min: minY.value,
             max: maxY.value,
             type: 'value',
+            axisLabel: {
+                formatter: function (value: any, index: any) {
+                    console.log(value)
+                    return value.toFixed(2);
+                },
+            },
             splitLine: {
                 show: true,
                 lineStyle: {
@@ -225,6 +227,7 @@ function getNowData() {
 }
 /** 初始化加载 */
 onMounted(() => {
+    console.log("十分图")
     initDateList();
     getNowData();
     if (parentData.parentCode != undefined && parentData.parentCode != '') {
