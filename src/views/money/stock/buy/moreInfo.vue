@@ -148,7 +148,7 @@ function updateMoreInfoData(code?: string) {
               <timeSharingChart
                 id="timeSharingChart"
                 height="400px"
-                width="700px"
+                width="1000px"
                 :parentCode="parentData.parentCode"
                 class="bg-[var(--el-bg-color-overlay)]"/>
             </el-col>
