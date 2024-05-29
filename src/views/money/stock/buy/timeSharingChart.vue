@@ -8,6 +8,8 @@
 import axios from "axios";
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
 import * as echarts from "echarts";
+import { STOCKURL } from "@/api/publicApi";
+import { dateFormat } from "@/utils/dateUtils";
 
 
 /** 变量 */
@@ -75,7 +77,6 @@ function dataEncapsulation(res: any) {
     let tempValue = (maxY.value - Number(yesterdayClosing.value)) > (Number(yesterdayClosing.value) - minY.value) ? (maxY.value - Number(yesterdayClosing.value)).toFixed(2) : (Number(yesterdayClosing.value) - minY.value).toFixed(2)
     minY.value = Number(yesterdayClosing.value) - Number(tempValue)
     maxY.value = Number(yesterdayClosing.value) + Number(tempValue)
-    console.log(yesterdayClosing.value+":"+Number(tempValue))
     drawTimeSharingChartInit()
 }
 var option: any;
@@ -124,7 +125,6 @@ function drawTimeSharingChartInit() {
             type: 'value',
             axisLabel: {
                 formatter: function (value: any, index: any) {
-                    console.log(value)
                     return value.toFixed(2);
                 },
             },
@@ -218,12 +218,25 @@ function initDateList() {
         , "1500"
     ];
 }
+
 const yesterdayClosing = ref<number>()
 function getNowData() {
     axios.get("https://sqt.gtimg.cn/q=" + parentData.parentCode).then((res) => {
         let stockData = res.data.split("~");
         yesterdayClosing.value = stockData[4];
     });
+}
+async function minutesData(code: string){
+    let timeSharingUrl = STOCKURL+"/stockKline?type=1&klt=1&lmt=10&fqt=0&end="+dateFormat(new Date(),"YYYYMMDD")+"&code="+code.substring(2);
+    console.log(timeSharingUrl)
+    try{
+        const response = await axios.get(timeSharingUrl);
+        console.log(response.data);
+    }catch (error) {
+        console.error(error);
+    }
+
+
 }
 /** 初始化加载 */
 onMounted(() => {
@@ -232,6 +245,7 @@ onMounted(() => {
     getNowData();
     if (parentData.parentCode != undefined && parentData.parentCode != '') {
         getTimeSharingData(parentData.parentCode);
+        // minutesData(parentData.parentCode);
     }
     // /** 初始化时分图 */
     // drawTimeSharingChartInit();
