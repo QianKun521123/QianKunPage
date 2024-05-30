@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getBillCategoryPage,getBillCategoryForm, addBillCategory, updateBillCategory, deleteBillCategory } from "@/api/money/bill/category";
 
-import { BillCategoryPageVO, BillCategoryQuery, BillCategoryForm } from "@/api/money/bill/name/types";
+import { BillCategoryPageVO, BillCategoryQuery, BillCategoryForm } from "@/api/money/bill/category/types";
 
 
 const queryFormRef = ref(ElForm);
