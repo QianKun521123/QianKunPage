@@ -115,7 +115,7 @@ function resetForm() {
   roleFormRef.value.clearValidate();
 
   formData.id = undefined;
-  formData.status = 1;
+  formData.status = 0;
 }
 
 /** 删除角色 */

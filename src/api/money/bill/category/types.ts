@@ -13,7 +13,7 @@ export interface UserInfo {
 /**
  * 账单名称查询对象类型
  */
-export interface BillGategoryQuery extends PageQuery {
+export interface BillCategoryQuery extends PageQuery {
   keywords?: string;
   // status?: number;
   // startTime?: string;
@@ -23,7 +23,7 @@ export interface BillGategoryQuery extends PageQuery {
 /**
  * 账单名称分页对象
  */
-export interface BillGategoryPageVO {
+export interface BillCategoryPageVO {
   /** 账单名称ID */
   id?: number;
   /** 账单名称 */
