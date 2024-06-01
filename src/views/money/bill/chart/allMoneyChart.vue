@@ -1,13 +1,15 @@
 <!-- 饼图 -->
 <template>
   <el-card>
-    <div :id="id" :class="className" style="width:100%; height: 400px;"></div>
+    <div :id="id" :class="className" :style="{ height, width }"></div>
   </el-card>
 </template>
 
 <script setup lang="ts">
 import * as echarts from "echarts";
+import { getBillChartAllData } from "@/api/money/bill/chart";
 
+const chart = ref<any>("");
 const props = defineProps({
   id: {
     type: String,
@@ -29,6 +31,10 @@ const props = defineProps({
   },
 });
 const options = {
+  title: {
+    text: '收益总览',
+    left: 'center'
+  },
   grid: {
     left: "2%",
     right: "2%",
@@ -41,48 +47,54 @@ const options = {
       color: "#999",
     },
   },
+  tooltip: {
+    trigger: 'item',
+    formatter: "{a} <br/>{b}: {c} ({d}%)"
+  },
   series: [
     {
-      name: "Nightingale Chart",
+      name: "总览",
       type: "pie",
-      radius: [50, 130],
-      center: ["50%", "50%"],
-      roseType: "area",
+      radius: '60%',
       itemStyle: {
         borderRadius: 1,
         color: function (params: any) {
-          //自定义颜色
-          const colorList = ["#409EFF", "#67C23A", "#E6A23C", "#F56C6C"];
+          const colorList = ["#409EFF", "#67C23A"];
           return colorList[params.dataIndex];
         },
       },
       data: [
-        { value: 26, name: "家用电器" },
-        { value: 27, name: "户外运动" },
-        { value: 24, name: "汽车用品" },
-        { value: 23, name: "手机数码" },
+        { value: 26, name: "纯利" },
+        { value: 27, name: "支出" },
       ],
+      label: {
+          show: true, // 是否显示标签
+          formatter: '{b}: {c} ({d}%)' // 标签文案的格式器
+      }
     },
   ],
 };
-
-const chart = ref<any>("");
-
-onMounted(() => {
+function initChart(){
   chart.value = markRaw(
     echarts.init(document.getElementById(props.id) as HTMLDivElement)
   );
-
   chart.value.setOption(options);
-
   window.addEventListener("resize", () => {
     chart.value.resize();
   });
-});
-
+}
+function getAllData(){
+  getBillChartAllData().then(({ data }) => {
+      alert(data.money)
+  });
+}
 onActivated(() => {
+  getAllData();
   if (chart.value) {
     chart.value.resize();
   }
+});
+onMounted(() => {
+  initChart();
 });
 </script>
